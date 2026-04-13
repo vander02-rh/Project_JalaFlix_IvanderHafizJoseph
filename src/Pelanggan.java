@@ -16,7 +16,7 @@ abstract class Pelanggan {
     }
 
     public abstract int getMaxDevices();
-
+    
     public String getNama() { return nama; }
     public String getEmail() { return email; }
 
