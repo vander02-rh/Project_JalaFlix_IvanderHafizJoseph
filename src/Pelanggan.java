@@ -1,86 +1,69 @@
 import java.util.ArrayList;
 
-abstract class Pelanggan {
+class Pelanggan {
+    private String kodePelanggan;
     private String nama;
-    private String email;
-    private String password;
-    protected int usia;
-    protected ArrayList<Film> daftarTontonan;
+    private String nomorTelepon;
+    private String statusKeanggotaan;
+    private String kategori; 
+    private ArrayList<Film> history;
 
-    public Pelanggan(String nama, String email, String password, int usia) {
+    public Pelanggan(String kodePelanggan, String nama, String nomorTelepon, String kategori) {
+        this.kodePelanggan = kodePelanggan;
         this.nama = nama;
-        this.email = email;
-        this.password = password;
-        this.usia = usia;
-        this.daftarTontonan = new ArrayList<>();
+        this.nomorTelepon = nomorTelepon;
+        this.kategori = kategori; 
+        this.statusKeanggotaan = "aktif";
+        this.history = new ArrayList<>();
     }
 
-    public abstract int getMaxDevices();
-    
-    public String getNama() { return nama; }
-    public String getEmail() { return email; }
-
-    public boolean login(String email, String password) {
-        return this.email.equals(email) && this.password.equals(password);
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
     }
 
-    public void tambahFilm(Film film) {
-        if (this.usia < film.getKategoriUsia()) {
-            System.out.println("Gagal: Usia tidak mencukupi untuk menonton " + film.getJudul());
+    public void setStatusKeanggotaan(String status) {
+        this.statusKeanggotaan = status;
+    }
+
+    public void putarFilm(Film film) {
+        if (!statusKeanggotaan.equalsIgnoreCase("aktif")) {
+            System.out.println("Keanggotaan tidak aktif.");
             return;
         }
 
-        if (!film.isAvailable()) {
-            System.out.println("Gagal: Film " + film.getJudul() + " saat ini tidak tersedia.");
-            return;
+        boolean akses = false;
+        Kategori katFilm = film.getKategori();
+
+        if (this.kategori.equalsIgnoreCase("platinum")) {
+            akses = true;
+        } else if (this.kategori.equalsIgnoreCase("gold")) {
+            if (katFilm == Kategori.Reguler || katFilm == Kategori.New) {
+                akses = true;
+            }
+        } else if (this.kategori.equalsIgnoreCase("reguler")) {
+            if (katFilm == Kategori.Reguler) {
+                akses = true;
+            }
         }
 
-        daftarTontonan.add(film);
-        System.out.println("Berhasil: " + film.getJudul() + " ditambahkan ke daftar.");
-    }
-
-    public void cetakInfoAkun() {
-        System.out.println("=== Profil Pelanggan ===");
-        System.out.println("Nama      : " + nama);
-        System.out.println("Email     : " + email);
-        System.out.println("Max Device: " + getMaxDevices());
-    }
-}
-
-class PelangganPremium extends Pelanggan {
-    
-    public PelangganPremium(String nama, String email, String password, int usia) {
-        super(nama, email, password, usia);
-    }
-
-    @Override
-    public int getMaxDevices() {
-        return 5; 
-    }
-
-    @Override
-    public void tambahFilm(Film film) {
-        super.tambahFilm(film);
-    }
-}
-
-class PelangganBiasa extends Pelanggan {
-
-    public PelangganBiasa(String nama, String email, String password, int usia) {
-        super(nama, email, password, usia);
-    }
-
-    @Override
-    public int getMaxDevices() {
-        return 1; 
-    }
-
-    @Override
-    public void tambahFilm(Film film) {
-        if (film instanceof FilmOriginal) {
-            System.out.println("Gagal: " + film.getJudul() + " hanya untuk member Premium!");
+        if (akses && film.isAvailable()) {
+            history.add(film);
+            System.out.println("Memutar: " + film.getJudul());
+        } else if (!akses) {
+            System.out.println("Kategori akun Anda tidak mencukupi untuk menonton " + film.getJudul());
         } else {
-            super.tambahFilm(film);
+            System.out.println("Film " + film.getJudul() + " sedang tidak tersedia.");
+        }
+    }
+
+    public void cetakHistory() {
+        System.out.println("Riwayat Menonton " + nama + ":");
+        if (history.isEmpty()) {
+            System.out.println("- Belum ada film yang ditonton.");
+        } else {
+            for (Film f : history) {
+                System.out.println("- " + f.getJudul());
+            }
         }
     }
 }
