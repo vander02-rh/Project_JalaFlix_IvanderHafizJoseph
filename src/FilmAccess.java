@@ -1,4 +1,4 @@
 public interface FilmAccess {
     void LihatDaftarFilm();
-    void putarFilm();
+    void putarFilm(Film film);
 }

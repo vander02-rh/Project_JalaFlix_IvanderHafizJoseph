@@ -1,4 +1,4 @@
 public interface HistoryAction {
     void getHistory();
-    void updateHistory();
+    void updateHistory(Film film);
 }
