@@ -23,12 +23,8 @@ public abstract class Pelanggan implements FilmAccess,HistoryAction{
 
     @Override
     public void getHistory(){
+        System.out.printf("== Menampilkan History %s ==\n",nama);
         history.tampilkanHistory();
-    }
-
-    @Override
-    public void updateHistory(Film film){
-        history.addHistory(film);
     }
 
 }
@@ -43,7 +39,7 @@ class PelangganPlatinum extends Pelanggan {
 
     @Override
     public void info() {
-    System.out.println("========== JALAFLIX PREMIUM INFO ==========");
+    System.out.println("========== JALAFLIX GOLD INFO ==========");
     System.out.println("ID Pelanggan : " + this.kodePelanggan);
     System.out.println("Nama User    : " + this.nama);
     System.out.println("Telepon      : " + this.nomorTelepon);
@@ -65,6 +61,7 @@ class PelangganPlatinum extends Pelanggan {
     @Override
     public void putarFilm(Film film) {
         System.out.println("[Platinum] Memutar: " + film.getJudul());
+        history.addHistory(film);
     }
 
 }
@@ -103,6 +100,7 @@ class PelangganGold extends Pelanggan {
         Kategori katFilm = film.getKategori();
         if (katFilm == hakAkses[0] || katFilm == hakAkses[1]) {
             System.out.println("[Gold] Memutar: " + film.getJudul());
+            history.addHistory(film);
         } else {
             System.out.println("Akun Gold tidak mencukupi untuk menonton film " + film.getJudul());
         }
@@ -121,12 +119,12 @@ class PelangganReguler extends Pelanggan {
 
     @Override
     public void info() {
-    System.out.println("========== JALAFLIX PREMIUM INFO ==========");
+    System.out.println("========== JALAFLIX REGULER INFO ==========");
     System.out.println("ID Pelanggan : " + this.kodePelanggan);
     System.out.println("Nama User    : " + this.nama);
     System.out.println("Telepon      : " + this.nomorTelepon);
     System.out.println("Status       : " + this.statusKeanggotaan.toUpperCase());
-    System.out.println("Tipe Akun    : PLATINUM");
+    System.out.println("Tipe Akun    : REGULER");
     System.out.print("Akses Konten : ");
     System.out.print(hakAkses);
 
@@ -141,6 +139,7 @@ class PelangganReguler extends Pelanggan {
         Kategori katFilm = film.getKategori();
         if (katFilm == hakAkses) {
                 System.out.println("[Reguler] Memutar: " + film.getJudul());
+                history.addHistory(film);
         } else {
             System.out.println("Akun Reguler hanya boleh menonton film kategori Reguler.");
         }

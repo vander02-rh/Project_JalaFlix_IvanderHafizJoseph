@@ -3,8 +3,8 @@ public class HistoryTontonan{
     private int counter = 0;
 
     public void tampilkanHistory(){
-        for (int i = 0; i < 10; i++) {
-            System.out.printf("%02d. %s",(i+1),daftarHistory[i].getJudul());
+        for (int i = 0; i < counter; i++) {
+            System.out.printf("%02d. %s\n",(i+1),daftarHistory[i].getJudul());
         }
     }
 

@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 enum Kategori {
     New, Reguler, Original
 } 
@@ -13,21 +15,39 @@ public class Film{
 
     private Genre genre;
     private Kategori kategori;
+    private boolean isOriginal;
 
     public Film(String judul, Genre genre, int tahunRilis, String sinopsis, 
-                double rating, String studio, String sutradara, int kategoriUsia){
+                double rating, String studio, String sutradara, int kategoriUsia, boolean isOriginal){
         if (tahunRilis < 1800){
             throw new TahunTooOldException();  
         }
+
         this.tahunRilis = tahunRilis;
         this.judul = judul;
         this.genre = genre;
         this.sinopsis = sinopsis;
         this.kategoriUsia = kategoriUsia;
+        this.isOriginal = isOriginal;
+
+        if (isOriginal) {
+            kategori = Kategori.Original;
+        }else{
+            updateKategori();
+        }
 
         this.rating = rating;
         this.studio = studio;
         this.sutradara = sutradara;
+    }
+
+    private void updateKategori(){
+        int tahunSekarang = LocalDate.now().getYear();
+        if (tahunSekarang - tahunRilis <= 5) {
+            kategori = Kategori.New;
+        } else {
+            kategori = Kategori.Reguler;
+        }
     }
 
     public String getJudul(){return judul;}
@@ -42,6 +62,7 @@ public class Film{
     public String getSutradara(){return sutradara;}
 
     public void getDetails(){
+        if (!isOriginal){updateKategori();}
         System.out.printf("%-16s : %s \n",  "Judul", judul);
         System.out.printf("%-16s : %s \n",  "Genre", genre);
         System.out.printf("%-16s : %.2f \n",  "Rating", rating);
