@@ -1,10 +1,7 @@
 import java.util.ArrayList;
 
-abstract class Pelanggan {
-    protected String kodePelanggan;
-    protected String nama;
-    protected String nomorTelepon;
-    protected String statusKeanggotaan;
+public abstract class Pelanggan {
+    protected String kodePelanggan,nama,nomorTelepon,statusKeanggotaan;
     protected ArrayList<Film> history;
 
     public Pelanggan(String kodePelanggan, String nama, String nomorTelepon) {

@@ -6,7 +6,7 @@ enum Genre {
     Comedy, Horror, Drama, Action, SciFi, Fantasy, Mystery, Thriller, Adventure, Romance
 }
 
-abstract class Film{
+public abstract class Film{
     private String judul;
     private Genre genre;
     private String tanggal;
